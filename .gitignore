@@ -1,0 +1,8 @@
+.env
+logs/*
+storage/*
+docker/caddy/sites/*
+!logs/.gitignore
+!storage/.gitignore
+!storage/.gitignore
+!docker/caddy/sites/.gitignore

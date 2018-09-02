@@ -1,0 +1,46 @@
+version: "3.1"
+
+services:
+
+  caddy:
+    build: docker/caddy
+    environment:
+      - TLS_EMAIL_ID=${TLS_EMAIL_ID}
+    volumes:
+      - ${PROJECTS_DIRECTORY}:/projects
+      - ./docker/caddy/sites:/etc/caddy/sites
+      - ./docker/caddy/caddy:/etc/caddy
+      - ./logs/caddy:/var/log/caddy
+      - ./storage/caddy:/root/.caddy
+    ports:
+      - 80:80
+      - 443:443
+    depends_on:
+      - php-fpm
+
+  php-fpm:
+    build: docker/php-fpm
+    container_name: shenron-php-fpm
+    working_dir: /projects
+    volumes:
+      - ${PROJECTS_DIRECTORY}:/projects
+      - ./docker/php-fpm/php-ini-overrides.ini:/etc/php/7.2/fpm/conf.d/99-overrides.ini
+
+  mysql:
+    image: mysql:8.0
+    container_name: shenron-mysql
+    working_dir: /projects
+    volumes:
+      - ${PROJECTS_DIRECTORY}:/projects
+      - ./storage/mysql:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=${MYSQL_DATABASE}
+      - MYSQL_USER=${MYSQL_USERNAME}
+      - MYSQL_PASSWORD=${MSQL_PASSWORD}
+    ports:
+      - 3306:3306
+  
+  redis:
+    image: redis:alpine
+    container_name: shenron-redis
