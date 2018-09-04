@@ -14,6 +14,6 @@ RUN apk add --no-cache inotify-tools \
 
 EXPOSE 80 443 2015
 
-WORKDIR /var/www
+WORKDIR /projects
 
 CMD ["sh","-c","/start.sh & /usr/bin/caddy -conf /etc/caddy/Caddyfile -agree"]

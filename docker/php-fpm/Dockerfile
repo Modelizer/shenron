@@ -1,5 +1,8 @@
 FROM phpdockerio/php72-fpm:latest
-WORKDIR "/projects"
+
+WORKDIR /projects
+
+RUN chown -R www-data:www-data /projects
 
 # Fix debconf warnings upon build
 ARG DEBIAN_FRONTEND=noninteractive
